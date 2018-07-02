@@ -13,6 +13,12 @@ use app\models\ContactForm;
 use app\models\EntryForm;
 use app\models\Country;
 use yii\data\Pagination;
+//
+use app\models\Course;
+use app\models\Currency;
+use app\models\Exchange;
+use app\models\ExchangeCurrency;
+use app\models\PlaypayForm;
 
 class SiteController extends Controller
 {
@@ -63,9 +69,12 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($id = null)
     {
-        return $this->render('index');
+        if ($id != null) $arrayX = [1,2,3];
+        else $arrayX = [4,5,6];
+
+        return $this->render('index', $arrayX);
     }
 
     /**
@@ -130,6 +139,10 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    /**
+     * @param string $message
+     * @return string
+     */
     public function actionSay($message = "Hello")
     {
       return $this->render('say', ['message'=>$message]);
@@ -175,5 +188,83 @@ class SiteController extends Controller
             'countries' => $countries,
             'pagination' => $pagination,
         ]);
+    }
+
+    /**
+     * Displays homepage.
+     *
+     *  $cE - current exchange
+     *  $cC - current currency
+     *
+     * @return string
+     */
+    public function actionPlaypay($cE = null, $cC = null)
+    {
+        $model = new PlaypayForm();
+
+        $course = Course::find()->asArray()->all();
+        $currency = Currency::find()->asArray()->All();
+        $exchange = Exchange::find()->asArray()->all();
+        $exchangeCurrency = ExchangeCurrency::find()->asArray()->all();
+
+        // поточний обмін
+        if( !in_array($cE, ['1-2', '2-1']) ) $cE = '1-2';
+        $cE = explode('-', $cE);
+
+        // формуємо варіанти поточного обміну валют -  1)UAH, 2)USD,RUR
+        $variantExchange = [];
+        foreach ($cE as $e){
+            if( empty($variantExchange[$e]) )$variantExchange[$e] = [];
+            foreach ($exchangeCurrency as $ec){
+                if ($e == $ec['exchangeId']){
+                    foreach ($currency as $c){
+                        if($ec['currencyId'] == $c['id']){ array_push($variantExchange[$e], $c['name']);}
+                    }
+                }
+            }
+        };
+
+        // поточні валюти для обміну
+        function makeC($cE, $variantExchange){
+            $cC = [];
+            foreach ($cE as $c)
+                array_push($cC, $variantExchange[$c][0]);
+            return $cC;
+        };
+        $cC = explode('-', $cC);
+        if(count($cC) == 2 ) {
+            $i = 0;
+            foreach ($cE as $key => $e)
+                if (in_array($cC[$key], $variantExchange[$e])) $i++;
+            if ($i != 2) $cC = makeC($cE, $variantExchange);
+        } else $cC = makeC($cE, $variantExchange);
+
+
+        // курс валют приват24
+        //$jsonurl = "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5";
+        //$json = trim(file_get_contents($jsonurl));
+        //$course = json_decode($json, true);
+
+
+        return $this->render('playpay', [
+            'course' =>$course,
+            'currency' => $currency,
+            'exchange' => $exchange,
+            'exchangeCurrency' => $exchangeCurrency,
+            'cE' => $cE,
+            'cC' => $cC,
+            'variantExchange' => $variantExchange,
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * @return string (Mik)
+     *
+     *
+     */
+    public function actionExchange(){
+
+        return $this->render('exchange');
     }
 }
