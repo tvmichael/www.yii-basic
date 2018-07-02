@@ -43,6 +43,7 @@ $config = [
             ],
         ],
         'db' => $db,
+
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -51,7 +52,11 @@ $config = [
             ],
         ],
         */
+
     ],
+
+    'timeZone' => 'Europe/Kiev',
+
     'params' => $params,
 ];
 
