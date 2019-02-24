@@ -1,0 +1,40 @@
+.m-style{
+	padding: 10px;
+}
+
+.m-box1{
+	border: 1px solid black;
+    outline-style: solid;
+    outline-color: red;	
+}
+
+
+.m-box2 {
+	margin: 10px;
+	min-height: 100px;
+	border: 1px solid grey;
+}
+.m-box2 div:hover {
+	background-color: grey;
+}
+.m-box2 div p {
+	display: none;
+}
+.m-box2 div:hover p {
+	display: block;
+}
+
+.m-box3{
+	margin-top: 10px;	
+}
+.m-box3 p{
+	background-color: rgba(12,133,200, 0.3); 
+}
+.m-box3 div{
+	padding-left: 100px;
+	background-image: url(../images/i.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	min-height: 300px;
+}
