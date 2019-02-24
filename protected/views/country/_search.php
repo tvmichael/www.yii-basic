@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CountrySearch */
+/* @var $model app\models\lessons\CountrySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name') ?>
 
     <?= $form->field($model, 'population') ?>
+
+    <?= $form->field($model, 'visited') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

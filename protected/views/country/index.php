@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\CountrySearch */
+/* @var $searchModel app\models\lessons\CountrySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Countries';
@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'code',
             'name',
             'population',
+            'visited',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

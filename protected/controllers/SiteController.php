@@ -9,19 +9,14 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-//
-use app\models\EntryForm;
-use app\models\Country;
+use app\models\HelperForm as HF;
+use app\models\lessons\Country;
 use yii\data\Pagination;
-//
-use app\models\Course;
-use app\models\Currency;
-use app\models\Exchange;
-use app\models\ExchangeCurrency;
-use app\models\PlaypayForm;
 
 class SiteController extends Controller
 {
+    //public $defaultAction = 'country';
+
     /**
      * {@inheritdoc}
      */
@@ -67,14 +62,11 @@ class SiteController extends Controller
     /**
      * Displays homepage.
      *
-     * @return string
+     * @return string()
      */
-    public function actionIndex($id = null)
+    public function actionIndex()
     {
-        if ($id != null) $arrayX = [1,2,3];
-        else $arrayX = [4,5,6];
-
-        return $this->render('index', $arrayX);
+        return $this->render('index');
     }
 
     /**
@@ -140,131 +132,68 @@ class SiteController extends Controller
     }
 
     /**
-     * @param string $message
-     * @return string
-     */
-    public function actionSay($message = "Hello")
+    * Display Helper lessons page
+    *
+    * @return string
+    */
+    public function actionHelper($message = 'Message empty!')    
     {
-      return $this->render('say', ['message'=>$message]);
-    }
+        $user = new HF();
+        //$user->name = 'Teraformus';
+        $user->email = 'default@mail.ua';
 
-    /**
-     * Entry Form (Mik 28.06.18)
-     *
-     * @return string
-     */
-    public function actionEntry(){
-        $model = new EntryForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            return $this->render('entry-confirm', ['model'=>$model]);
+        if ($user->validate()) {
+            // Все добре!
+            $error = ['message'=>'OK1'];
         } else {
-            return $this->render('entry', ['model'=>$model]);
+            // Невдача!
+            $error = $user->getErrors();
         }
+
+        $mas = [
+            'title'=>'Work with helpers:HTML',
+            'error'=> $error,
+            'message'=>$message,
+            'user' => $user,
+        ];
+
+        return $this->render('/helper/helper', $mas);
     }
 
     /**
-     * Entry Form (Mik 28.06.18)
-     *
-     * @return string
-     */
-    public function actionCountry($code = null, $pages = 5){
+    * Display lessons page
+    *
+    * @return string
+    */
+    public function actionCountry()    
+    {
         $query = Country::find();
 
         $pagination = new Pagination([
-            'defaultPageSize' => $pages,
+            'defaultPageSize' => 3,
             'totalCount' => $query->count(),
         ]);
-
-        if ($code) $dbWere = ['code'=>$code];
-        else $dbWere = [];
 
         $countries = $query->orderBy('name')
             ->offset($pagination->offset)
             ->limit($pagination->limit)
-            ->where($dbWere)
             ->all();
 
-        return $this->render('country', [
+        return $this->render('lessons\country', [
             'countries' => $countries,
             'pagination' => $pagination,
         ]);
     }
 
+    
     /**
-     * Displays homepage.
-     *
-     *  $cE - current exchange
-     *  $cC - current currency
-     *
-     * @return string
-     */
-    public function actionPlaypay($cE = null, $cC = null)
+    * Display lessons style test
+    *
+    * @return string
+    */
+    public function actionStyle()    
     {
-        $model = new PlaypayForm();
-
-        $course = Course::find()->asArray()->all();
-        $currency = Currency::find()->asArray()->All();
-        $exchange = Exchange::find()->asArray()->all();
-        $exchangeCurrency = ExchangeCurrency::find()->asArray()->all();
-
-        // поточний обмін
-        if( !in_array($cE, ['1-2', '2-1']) ) $cE = '1-2';
-        $cE = explode('-', $cE);
-
-        // формуємо варіанти поточного обміну валют -  1)UAH, 2)USD,RUR
-        $variantExchange = [];
-        foreach ($cE as $e){
-            if( empty($variantExchange[$e]) )$variantExchange[$e] = [];
-            foreach ($exchangeCurrency as $ec){
-                if ($e == $ec['exchangeId']){
-                    foreach ($currency as $c){
-                        if($ec['currencyId'] == $c['id']){ array_push($variantExchange[$e], $c['name']);}
-                    }
-                }
-            }
-        };
-
-        // поточні валюти для обміну
-        function makeC($cE, $variantExchange){
-            $cC = [];
-            foreach ($cE as $c)
-                array_push($cC, $variantExchange[$c][0]);
-            return $cC;
-        };
-        $cC = explode('-', $cC);
-        if(count($cC) == 2 ) {
-            $i = 0;
-            foreach ($cE as $key => $e)
-                if (in_array($cC[$key], $variantExchange[$e])) $i++;
-            if ($i != 2) $cC = makeC($cE, $variantExchange);
-        } else $cC = makeC($cE, $variantExchange);
-
-
-        // курс валют приват24
-        //$jsonurl = "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5";
-        //$json = trim(file_get_contents($jsonurl));
-        //$course = json_decode($json, true);
-
-
-        return $this->render('playpay', [
-            'course' =>$course,
-            'currency' => $currency,
-            'exchange' => $exchange,
-            'exchangeCurrency' => $exchangeCurrency,
-            'cE' => $cE,
-            'cC' => $cC,
-            'variantExchange' => $variantExchange,
-            'model' => $model,
-        ]);
+        return $this->render('style\index');
     }
 
-    /**
-     * @return string (Mik)
-     *
-     *
-     */
-    public function actionExchange(){
-
-        return $this->render('exchange');
-    }
 }
