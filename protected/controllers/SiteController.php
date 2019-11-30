@@ -125,4 +125,13 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+
+    /**
+     * Lessons with component `Select 2`
+     */
+    public function actionSelectTwo()
+    {
+        return $this->render('select/index');
+    }
 }
