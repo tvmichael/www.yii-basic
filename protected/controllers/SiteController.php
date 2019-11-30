@@ -134,4 +134,16 @@ class SiteController extends Controller
     {
         return $this->render('select/index');
     }
+
+
+    /**
+     * Lessons 'Load file'
+     */
+    public function actionLoadFile()
+    {
+
+        return $this->render('file/index');
+    }
+
+
 }
