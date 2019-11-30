@@ -9,14 +9,9 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\HelperForm as HF;
-use app\models\lessons\Country;
-use yii\data\Pagination;
 
 class SiteController extends Controller
 {
-    //public $defaultAction = 'country';
-
     /**
      * {@inheritdoc}
      */
@@ -62,7 +57,7 @@ class SiteController extends Controller
     /**
      * Displays homepage.
      *
-     * @return string()
+     * @return string
      */
     public function actionIndex()
     {
@@ -130,70 +125,4 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-
-    /**
-    * Display Helper lessons page
-    *
-    * @return string
-    */
-    public function actionHelper($message = 'Message empty!')    
-    {
-        $user = new HF();
-        //$user->name = 'Teraformus';
-        $user->email = 'default@mail.ua';
-
-        if ($user->validate()) {
-            // Все добре!
-            $error = ['message'=>'OK1'];
-        } else {
-            // Невдача!
-            $error = $user->getErrors();
-        }
-
-        $mas = [
-            'title'=>'Work with helpers:HTML',
-            'error'=> $error,
-            'message'=>$message,
-            'user' => $user,
-        ];
-
-        return $this->render('/helper/helper', $mas);
-    }
-
-    /**
-    * Display lessons page
-    *
-    * @return string
-    */
-    public function actionCountry()    
-    {
-        $query = Country::find();
-
-        $pagination = new Pagination([
-            'defaultPageSize' => 3,
-            'totalCount' => $query->count(),
-        ]);
-
-        $countries = $query->orderBy('name')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
-
-        return $this->render('lessons\country', [
-            'countries' => $countries,
-            'pagination' => $pagination,
-        ]);
-    }
-
-    
-    /**
-    * Display lessons style test
-    *
-    * @return string
-    */
-    public function actionStyle()    
-    {
-        return $this->render('style\index');
-    }
-
 }

@@ -11,14 +11,10 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-
-    //'defaultRoute'=>'country/index', 
-
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '73vcqTXa2USJnC5Hh5LtXY6Ne3o2YbG7',
-            //'baseUrl' => 'базовий адрес',
+            'cookieValidationKey' => 'michael',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -47,27 +43,16 @@ $config = [
             ],
         ],
         'db' => $db,
-        
+        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'enableStrictParsing' => false,
             'rules' => [
-                
             ],
         ],
-      
+        */
     ],
-
     'params' => $params,
-      
-    // підлючення модулів
-    'modules'=> [        
-        'forum' => [
-            'class' => 'app\modules\forum\Module',
-            // ... другие настройки модуля ...
-        ],
-    ]
 ];
 
 if (YII_ENV_DEV) {
