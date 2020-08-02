@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Lesson 1';
 
 use kartik\select2\Select2;
 use yii\web\JsExpression;
@@ -113,8 +113,7 @@ SCRIPT;
 ?>
 <div class="site-index">
     <div class="jumbotron">
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p class="lead"><<< SCRIPT</p>
     </div>
     <div class="body-content">
         <div class="select">
@@ -162,27 +161,6 @@ SCRIPT;
             ?>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function(event) {
-            $(document).ready(function() {
-
-            });
-
-            let select = document.getElementById('state_12'),
-                option = select.getElementsByTagName('option');
-
-            if(option)
-            {
-
-                for (let i=0; i < option.length; i++)
-                {
-                    numberValue.push(option[i].text);
-                }
-            }
-            console.log('state_12::');
-            console.log(numberValue);
-        });
-    </script>
 </div>
 
 

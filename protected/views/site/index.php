@@ -36,6 +36,17 @@ $this->title = 'My Yii Application';
                 </div>
             </div>
 
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Marzipano</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p><a href="<?php echo Url::to(['/site/marzipano']);?>">Marzipano</a></p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>

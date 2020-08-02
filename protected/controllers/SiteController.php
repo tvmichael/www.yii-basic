@@ -127,12 +127,17 @@ class SiteController extends Controller
     }
 
 
-    /**
-     * Lessons with component `Select 2`
-     */
-    public function actionSelectTwo()
+    /** LESSONS ---------------------------------------------------------------------------------------------------- */
+
+
+    public function actionSelectTwo($page = '')
     {
-        return $this->render('select/index');
+        if(empty($page))
+        {
+            $page = 'index';
+        }
+
+        return $this->render('select/'.$page);
     }
 
 
@@ -141,8 +146,16 @@ class SiteController extends Controller
      */
     public function actionLoadFile()
     {
-
         return $this->render('file/index');
+    }
+
+
+    /**
+     * Lessons 'Marzipano'
+     */
+    public function actionMarzipano()
+    {
+        return $this->render('marzipano/index');
     }
 
 
